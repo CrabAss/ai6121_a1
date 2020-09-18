@@ -1,6 +1,11 @@
 import numpy as np
 
 
+def cumulative_sum(h):
+    """find cumulative sum of a numpy array or a list"""
+    return [sum(h[:i + 1]) for i in range(len(h))]
+
+
 def get_histogram(img):
     # calculates normalized histogram of an image
     x, y = img.shape
@@ -11,18 +16,13 @@ def get_histogram(img):
     return np.array(h) / (x * y)
 
 
-def cumulative_sum(h):
-    # finds cumulative sum of a numpy array, list
-    return [sum(h[:i + 1]) for i in range(len(h))]
-
-
 def hist_equalize(img):
     histogram = get_histogram(img)
     cdf = np.array(cumulative_sum(histogram))  # cumulative distribution function
-    sk = np.uint8(255 * cdf)  # finding transfer function values
+    sk = np.uint8(255 * cdf)  # get the transfer function values
     x, y = img.shape
     equalized_img = np.zeros_like(img)
-    # applying transferred values for each pixels
+    # apply transferred values for each pixel
     for i in range(x):
         for j in range(y):
             equalized_img[i, j] = sk[img[i, j]]
